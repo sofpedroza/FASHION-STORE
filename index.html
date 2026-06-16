@@ -1,0 +1,555 @@
+html
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Fashion Store</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#000;
+padding:20px;
+text-align:center;
+}
+
+.logo{
+width:250px;
+border:3px solid #D4AF37;
+border-radius:15px;
+}
+
+.slogan{
+color:#D4AF37;
+margin-top:15px;
+}
+
+.contenedor{
+display:flex;
+gap:20px;
+padding:20px;
+align-items:flex-start;
+}
+
+.productos{
+flex:3;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(300px,1fr));
+
+gap:20px;
+}
+
+.producto{
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:
+0 0 10px rgba(0,0,0,.15);
+
+text-align:center;
+
+}
+
+.producto img{
+
+width:220px;
+height:250px;
+
+object-fit:cover;
+
+border-radius:10px;
+
+}
+
+.producto h3{
+margin:10px 0;
+}
+
+.producto p{
+margin:5px 0;
+}
+
+button{
+
+width:100%;
+
+padding:12px;
+
+background:#D4AF37;
+
+border:none;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+margin-top:10px;
+
+}
+
+button:hover{
+background:#b8922e;
+}
+
+.carrito{
+
+flex:1;
+
+background:white;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:
+0 0 10px rgba(0,0,0,.15);
+
+position:sticky;
+
+top:20px;
+
+}
+
+.carrito h2{
+text-align:center;
+}
+
+ul{
+list-style:none;
+}
+
+li{
+padding:8px;
+border-bottom:1px solid #ddd;
+}
+
+footer{
+background:#000;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:20px;
+}
+
+#total{
+color:#D4AF37;
+font-weight:bold;
+}
+
+.sin-stock{
+color:red;
+font-weight:bold;
+}
+
+@media(max-width:900px){
+
+.contenedor{
+flex-direction:column;
+}
+
+.carrito{
+position:static;
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<img
+src="img/logo-fashion-store.png"
+alt="Fashion Store"
+class="logo">
+
+<h2 class="slogan">
+Moda para todos
+</h2>
+
+</header>
+
+<div class="contenedor">
+
+<div
+class="productos"
+id="productos">
+
+</div>
+
+<div class="carrito">
+
+<h2>🛒 Carrito</h2>
+
+<ul id="listaCarrito"></ul>
+
+<br>
+
+<h3>
+Productos:
+<span id="cantidadProductos">
+0
+</span>
+</h3>
+
+<br>
+
+<h3>
+Total:
+$
+<span id="total">
+0
+</span>
+</h3>
+
+<br>
+
+<h3>Pedido:</h3>
+
+<p id="numeroPedido">
+No generado
+</p>
+
+<br>
+
+<button onclick="finalizarCompra()">
+Finalizar Compra
+</button>
+
+<button onclick="vaciarCarrito()">
+Vaciar Carrito
+</button>
+
+</div>
+
+</div>
+
+<footer>
+
+<h3>Fashion Store © 2026</h3>
+
+<p>
+Universidad Santa Fe,
+Aguascalientes
+</p>
+
+<p>
+449-123-4567
+</p>
+
+</footer>
+
+<script>
+
+const clienteActivo =
+JSON.parse(
+localStorage.getItem(
+"clienteActivo"
+)
+);
+
+if(!clienteActivo){
+
+window.location.href =
+"login-clientes.html";
+
+}
+
+let inventario =
+JSON.parse(
+localStorage.getItem(
+"inventario"
+)
+) || [];
+
+let pedidos =
+JSON.parse(
+localStorage.getItem(
+"pedidos"
+)
+) || [];
+
+let carrito = [];
+
+let total = 0;
+
+function cargarProductos(){
+
+const contenedor =
+document.getElementById(
+"productos"
+);
+
+contenedor.innerHTML = "";
+
+inventario.forEach(producto=>{
+
+contenedor.innerHTML += `
+
+<div class="producto">
+
+<img
+src="${producto.imagen}"
+alt="${producto.nombre}">
+
+<h3>
+${producto.nombre}
+</h3>
+
+<p>
+${producto.categoria}
+</p>
+
+<p>
+Talla:
+${producto.talla}
+</p>
+
+<p>
+Color:
+${producto.color}
+</p>
+
+<p>
+Stock:
+${producto.stock}
+</p>
+
+<p>
+$${producto.precio}
+</p>
+
+${
+producto.stock > 0 ?
+
+`<button onclick="
+agregarCarrito(
+${producto.id}
+)">
+Agregar al carrito
+</button>`
+
+<button onclick="cerrarSesion()">
+Cerrar Sesión
+</button>
+
+:
+
+`<p class="sin-stock">
+Sin Stock
+</p>`
+
+}
+
+</div>
+
+`;
+
+});
+
+}
+
+function cerrarSesion(){
+
+localStorage.removeItem(
+"clienteActivo"
+);
+
+window.location.href =
+"login-clientes.html";
+
+}
+
+function agregarCarrito(id){
+
+const producto =
+inventario.find(
+p => p.id === id
+);
+
+if(!producto) return;
+
+if(producto.stock <= 0){
+
+alert(
+"Producto sin stock"
+);
+
+return;
+
+}
+
+carrito.push(producto);
+
+total +=
+Number(
+producto.precio
+);
+
+actualizarCarrito();
+
+}
+
+function actualizarCarrito(){
+
+const lista =
+document.getElementById(
+"listaCarrito"
+);
+
+lista.innerHTML = "";
+
+carrito.forEach(item=>{
+
+lista.innerHTML += `
+
+<li>
+
+${item.nombre}
+
+<br>
+
+$${item.precio}
+
+</li>
+
+`;
+
+});
+
+document.getElementById(
+"cantidadProductos"
+).textContent =
+carrito.length;
+
+document.getElementById(
+"total"
+).textContent =
+total.toFixed(2);
+
+}
+
+function vaciarCarrito(){
+
+carrito = [];
+
+total = 0;
+
+actualizarCarrito();
+
+}
+
+function finalizarCompra(){
+
+if(carrito.length === 0){
+
+alert(
+"El carrito está vacío"
+);
+
+return;
+
+}
+
+const pedido = {
+
+id:
+"FS-" +
+Date.now(),
+
+fecha:
+new Date()
+.toLocaleString(),
+
+productos:
+carrito,
+
+total:
+total
+
+};
+
+pedidos.push(
+pedido
+);
+
+localStorage.setItem(
+"pedidos",
+JSON.stringify(
+pedidos
+)
+);
+
+carrito.forEach(item=>{
+
+let producto =
+inventario.find(
+p => p.id === item.id
+);
+
+if(producto){
+
+producto.stock--;
+
+}
+
+});
+
+localStorage.setItem(
+"inventario",
+JSON.stringify(
+inventario
+)
+);
+
+document.getElementById(
+"numeroPedido"
+).textContent =
+pedido.id;
+
+alert(
+"Compra realizada.\n\nPedido: "
++ pedido.id
+);
+
+vaciarCarrito();
+
+cargarProductos();
+
+}
+
+cargarProductos();
+
+</script>
+
+</body>
+
+</html>

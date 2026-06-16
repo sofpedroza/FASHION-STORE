@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - Fashion Store</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#f5f5f5;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+min-height:100vh;
+
+}
+
+.contenedor{
+
+background:white;
+
+padding:30px;
+
+border-radius:15px;
+
+width:450px;
+
+box-shadow:
+0 0 15px rgba(0,0,0,.15);
+
+}
+
+.logo{
+
+display:block;
+
+margin:auto;
+
+width:220px;
+
+border:3px solid #D4AF37;
+
+border-radius:15px;
+
+margin-bottom:20px;
+
+}
+
+h1{
+
+text-align:center;
+
+color:#D4AF37;
+
+margin-bottom:20px;
+
+}
+
+h2{
+
+margin-top:20px;
+
+margin-bottom:10px;
+
+}
+
+input{
+
+width:100%;
+
+padding:12px;
+
+margin-bottom:10px;
+
+border:1px solid #ccc;
+
+border-radius:8px;
+
+}
+
+button{
+
+width:100%;
+
+padding:12px;
+
+background:#D4AF37;
+
+border:none;
+
+border-radius:8px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin-top:10px;
+
+}
+
+button:hover{
+
+background:#b8922e;
+
+}
+
+hr{
+
+margin:25px 0;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<img
+src="img/logo-fashion-store.png"
+alt="Fashion Store"
+class="logo">
+
+<h1>Fashion Store</h1>
+
+<h2>Iniciar Sesión</h2>
+
+<input
+type="email"
+id="loginCorreo"
+placeholder="Correo Electrónico">
+
+<input
+type="password"
+id="loginPassword"
+placeholder="Contraseña">
+
+<button onclick="iniciarSesion()">
+
+Ingresar
+
+</button>
+
+<hr>
+
+<h2>Registro de Cliente</h2>
+
+<input
+type="text"
+id="nombre"
+placeholder="Nombre Completo">
+
+<input
+type="email"
+id="correo"
+placeholder="Correo Electrónico">
+
+<input
+type="tel"
+id="telefono"
+placeholder="Teléfono">
+
+<input
+type="password"
+id="password"
+placeholder="Contraseña">
+
+<button onclick="registrarCliente()">
+
+Registrarme
+
+</button>
+
+</div>
+
+<script>
+
+let clientes =
+JSON.parse(
+localStorage.getItem(
+"clientes"
+)
+) || [];
+
+function guardarClientes(){
+
+localStorage.setItem(
+"clientes",
+JSON.stringify(clientes)
+);
+
+}
+
+function registrarCliente(){
+
+const nombre =
+document.getElementById(
+"nombre"
+).value;
+
+const correo =
+document.getElementById(
+"correo"
+).value;
+
+const telefono =
+document.getElementById(
+"telefono"
+).value;
+
+const password =
+document.getElementById(
+"password"
+).value;
+
+if(
+nombre === "" ||
+correo === "" ||
+telefono === "" ||
+password === ""
+){
+
+alert(
+"Completa todos los campos"
+);
+
+return;
+
+}
+
+const existe =
+clientes.find(
+c => c.correo === correo
+);
+
+if(existe){
+
+alert(
+"Ya existe un cliente con ese correo"
+);
+
+return;
+
+}
+
+const cliente = {
+
+id: Date.now(),
+
+nombre,
+
+correo,
+
+telefono,
+
+password
+
+};
+
+clientes.push(
+cliente
+);
+
+guardarClientes();
+
+alert(
+"Cliente registrado correctamente"
+);
+
+document.getElementById(
+"nombre"
+).value = "";
+
+document.getElementById(
+"correo"
+).value = "";
+
+document.getElementById(
+"telefono"
+).value = "";
+
+document.getElementById(
+"password"
+).value = "";
+
+}
+
+function iniciarSesion(){
+
+const correo =
+document.getElementById(
+"loginCorreo"
+).value;
+
+const password =
+document.getElementById(
+"loginPassword"
+).value;
+
+const cliente =
+clientes.find(c =>
+
+c.correo === correo &&
+c.password === password
+
+);
+
+if(!cliente){
+
+alert(
+"Correo o contraseña incorrectos"
+);
+
+return;
+
+}
+
+localStorage.setItem(
+"clienteActivo",
+JSON.stringify(cliente)
+);
+
+alert(
+"Bienvenido " +
+cliente.nombre
+);
+
+window.location.href =
+"index.html";
+
+}
+
+</script>
+
+</body>
+
+</html>
