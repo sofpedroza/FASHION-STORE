@@ -256,6 +256,7 @@ $0
 <tr>
 
 <th>Pedido</th>
+<th>Cliente</th>
 <th>Fecha</th>
 <th>Total</th>
 
@@ -332,6 +333,21 @@ document.getElementById(
 ).textContent =
 "$" +
 ventas.toFixed(2);
+
+}
+  function actualizarDatos(){
+
+inventario =
+JSON.parse(
+localStorage.getItem("inventario")
+) || [];
+
+pedidos =
+JSON.parse(
+localStorage.getItem("pedidos")
+) || [];
+
+actualizarDatos();
 
 }
 
