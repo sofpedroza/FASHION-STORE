@@ -469,34 +469,45 @@ actualizarCarrito();
 
 function finalizarCompra(){
 
-if(carrito.length === 0){
+    if(carrito.length === 0){
 
-alert(
-"El carrito está vacío"
-);
+        alert("El carrito está vacío");
+        return;
 
-return;
+    }
+
+    const pedido = {
+
+        id: "FS-" + Date.now(),
+
+        cliente: clienteActivo.nombre,
+
+        fecha: new Date().toLocaleString(),
+
+        productos: carrito,
+
+        total: total
+
+    };
+
+    pedidos.push(pedido);
+
+    localStorage.setItem(
+        "pedidos",
+        JSON.stringify(pedidos)
+    );
+
+    alert(
+        "Compra realizada.\nPedido: " +
+        pedido.id
+    );
+
+    vaciarCarrito();
+
+    cargarProductos();
 
 }
-
-const pedido = {
-
-id:
-"FS-" +
-Date.now(),
-
-fecha:
-new Date()
-.toLocaleString(),
-
-productos:
-carrito,
-
-total:
-total
-
-};
-
+  
 pedidos.push(
 pedido
 );
