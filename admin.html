@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+<script>
 
+if(
+localStorage.getItem(
+"vendedorActivo"
+) !== "true"
+){
+
+window.location.href =
+"login-vendedor.html";
+
+}
+
+</script>
+  
 <head>
 
 <meta charset="UTF-8">
@@ -439,6 +453,24 @@ cargarDashboard();
 cargarDashboard();
 cargarInventario();
 cargarPedidos();
+
+</script>
+<button onclick="cerrarSesion()">
+Cerrar Sesión
+</button>
+
+<script>
+
+function cerrarSesion(){
+
+localStorage.removeItem(
+"vendedorActivo"
+);
+
+window.location.href =
+"login-vendedor.html";
+
+}
 
 </script>
 
