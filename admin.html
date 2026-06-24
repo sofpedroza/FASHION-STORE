@@ -3,18 +3,18 @@
 <script>
 
 if(
-localStorage.getItem(
+sessionStorage.getItem(
 "vendedorActivo"
 ) !== "true"
 ){
 
-window.location.href =
-"login-vendedor.html";
+window.location.replace(
+"login-vendedor.html"
+);
 
 }
 
-</script>
-  
+</script>  
 <head>
 
 <meta charset="UTF-8">
@@ -349,7 +349,7 @@ document.getElementById(
 ventas.toFixed(2);
 
 }
-  function actualizarDatos(){
+function actualizarDatos(){
 
 inventario =
 JSON.parse(
@@ -361,10 +361,11 @@ JSON.parse(
 localStorage.getItem("pedidos")
 ) || [];
 
-actualizarDatos();
+cargarDashboard();
+cargarInventario();
+cargarPedidos();
 
 }
-
 function cargarInventario(){
 
 const tabla =
@@ -463,15 +464,13 @@ Cerrar Sesión
 
 function cerrarSesion(){
 
-localStorage.removeItem(
-"vendedorActivo"
+sessionStorage.clear();
+
+window.location.replace(
+"login-vendedor.html"
 );
 
-window.location.href =
-"login-vendedor.html";
-
 }
-
 </script>
 
 </body>
