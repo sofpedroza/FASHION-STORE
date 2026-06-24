@@ -274,18 +274,18 @@ Aguascalientes
 
 const clienteActivo =
 JSON.parse(
-localStorage.getItem(
+sessionStorage.getItem(
 "clienteActivo"
 )
 );
 
 if(!clienteActivo){
 
-window.location.href =
-"login-clientes.html";
+window.location.replace(
+"login-clientes.html"
+);
 
 }
-
 let inventario =
 JSON.parse(
 localStorage.getItem(
@@ -379,15 +379,13 @@ Sin Stock
 
 function cerrarSesion(){
 
-localStorage.removeItem(
-"clienteActivo"
+sessionStorage.clear();
+
+window.location.replace(
+"login-clientes.html"
 );
 
-window.location.href =
-"login-clientes.html";
-
 }
-
 function agregarCarrito(id){
 
 const producto =
