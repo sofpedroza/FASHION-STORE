@@ -9,7 +9,13 @@
 <title>Fashion Store</title>
 
 <style>
-
+#nombreCliente{
+text-align:center;
+color:#D4AF37;
+margin:10px 0 15px 0;
+font-size:18px;
+font-weight:bold;
+}
 *{
 margin:0;
 padding:0;
@@ -273,22 +279,6 @@ Aguascalientes
 
 <script>
 
-  window.history.pushState(
-null,
-"",
-window.location.href
-);
-
-window.onpopstate = function(){
-
-window.history.pushState(
-null,
-"",
-window.location.href
-);
-
-};
-
 const clienteActivo =
 JSON.parse(
 sessionStorage.getItem(
@@ -303,6 +293,22 @@ window.location.replace(
 );
 
 }
+
+window.history.pushState(
+null,
+"",
+window.location.href
+);
+
+window.onpopstate = function(){
+
+window.history.pushState(
+null,
+"",
+window.location.href
+);
+
+};
   document.addEventListener(
 "DOMContentLoaded",
 function(){
