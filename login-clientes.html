@@ -171,17 +171,22 @@ placeholder="Nombre Completo">
 <input
 type="email"
 id="correo"
-placeholder="Correo Electrónico">
+placeholder="Correo Electrónico"
+required>
 
 <input
 type="tel"
 id="telefono"
-placeholder="Teléfono">
+placeholder="Teléfono"
+maxlength="10"
+required>
 
 <input
 type="password"
 id="password"
-placeholder="Contraseña">
+placeholder="Contraseña"
+minlength="6"
+required>
 
 <button onclick="registrarCliente()">
 
@@ -214,17 +219,17 @@ function registrarCliente(){
 const nombre =
 document.getElementById(
 "nombre"
-).value;
+).value.trim();
 
 const correo =
 document.getElementById(
 "correo"
-).value;
+).value.trim();
 
 const telefono =
 document.getElementById(
 "telefono"
-).value;
+).value.trim();
 
 const password =
 document.getElementById(
@@ -240,6 +245,42 @@ password === ""
 
 alert(
 "Completa todos los campos"
+);
+
+return;
+
+}
+
+// Validar correo
+const patronCorreo =
+/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if(!patronCorreo.test(correo)){
+
+alert(
+"Ingresa un correo electrónico válido"
+);
+
+return;
+
+}
+
+// Validar teléfono (10 dígitos)
+if(!/^\d{10}$/.test(telefono)){
+
+alert(
+"El teléfono debe contener exactamente 10 números"
+);
+
+return;
+
+}
+
+// Validar contraseña
+if(password.length < 6){
+
+alert(
+"La contraseña debe tener al menos 6 caracteres"
 );
 
 return;
@@ -302,7 +343,7 @@ document.getElementById(
 ).value = "";
 
 }
-
+  
 function iniciarSesion(){
 
 const correo =
