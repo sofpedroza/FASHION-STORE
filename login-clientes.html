@@ -333,11 +333,26 @@ return;
 
 }
 
-localStorage.setItem(
+sessionStorage.setItem(
 "clienteActivo",
 JSON.stringify(cliente)
 );
 
+alert(
+"Bienvenido " +
+cliente.nombre
+);
+
+window.location.href =
+"index.html";
+
+}
+  
+sessionStorage.setItem(
+"clienteActivo",
+JSON.stringify(cliente)
+);
+  
 alert(
 "Bienvenido " +
 cliente.nombre
