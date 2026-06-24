@@ -208,6 +208,7 @@ id="productos">
 
 <h2>🛒 Carrito</h2>
 
+<h3 id="nombreCliente"></h3>
 <ul id="listaCarrito"></ul>
 
 <br>
@@ -302,6 +303,18 @@ window.location.replace(
 );
 
 }
+  document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+document.getElementById(
+"nombreCliente"
+).textContent =
+"👤 Bienvenido, " +
+clienteActivo.nombre;
+
+});
+  
 let inventario =
 JSON.parse(
 localStorage.getItem(
